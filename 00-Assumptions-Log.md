@@ -1,0 +1,17 @@
+# Assumptions Log
+
+**Purpose:** Every assumption made anywhere in this project gets logged here the moment it's made — not backfilled — so it stays traceable and defensible under questioning (e.g., "How did you validate your business case assumptions?"). Update this file every time a new deliverable introduces an assumption.
+
+| # | Date | Assumption | Where used | Status | Validation plan |
+|---|---|---|---|---|---|
+| 1 | 20 Aug 2026 | Corvus Resources' CMMS is a mid-tier platform with basic work-order logging but no cross-asset reporting or dashboarding capability | Project Charter §7; shapes the BRD's functional requirements | Unvalidated | To be revisited at Phase 2 kickoff per Charter §7; in a real engagement this would be confirmed via a CMMS walkthrough with the IT/System Owner |
+| 2 | 20 Aug 2026 | Historical maintenance and sensor data is available in a structure comparable to the AI4I 2020 dataset (re-skinned) | Project Charter §9; underlies all downstream analysis | Fixed by design — this is a portfolio project constraint, not a real-world assumption to validate | N/A — disclosed as a deliberate simulation choice, see data lineage note |
+| 3 | 20 Aug 2026 | The Operations Superintendent holds sole authority as Project Sponsor for scope and success-criteria sign-off | Project Charter §5, §3 (change control) | Assumed for the simulation | N/A — simulated stakeholder structure; in a real engagement this would be confirmed at charter kickoff, not assumed |
+| 4 | 20 Aug 2026 | The three fixed-plant assets named in scope (primary crusher, main conveyor line, process water pumps) are the maintenance-critical ones; other fixed-plant assets are excluded | Project Charter §3 | Assumed for the simulation | Would be confirmed with the Reliability Engineer against real criticality ratings in a live engagement |
+| 5 | 21 Aug 2026 | The $/hour cost-of-downtime rate feeding Objective O1 has not yet been set — a real published benchmark or an explicit, labelled rate must be recorded here before it is used in any deliverable | Project Charter §4 (O1 success criterion) | **Open — blocks O1** | To be set and sourced during the Week 3 business case build; nothing downstream should cite a $ figure until this row is filled in |
+| 6 | 21 Aug 2026 | O3's "material" failure-rate gap between asset tiers (the threshold that triggers a "yes, differentiated investment is justified" recommendation) has not yet been fixed | Project Charter §4 (O3 success criterion) | **Open — blocks O3** | Must be agreed and recorded here *before* the Tier 2 analysis is run, per the Round 2 critique finding — not decided after seeing the result |
+| 7 | 21 Aug 2026 | O5's statistical bar for "predictive enough to justify a proactive replacement policy" (e.g. a target precision/recall or hit-rate) has not yet been fixed | Project Charter §4 (O5 success criterion) | **Open — blocks O5** | Must be agreed and recorded here *before* the threshold analysis is run, per the Round 2 critique finding |
+
+## Notes
+
+Assumption #2 is different in kind from the others — it's a disclosed methodology choice for the portfolio project itself (using a real, re-skinned public dataset instead of real client data), not a business assumption that could turn out to be wrong. Keep it in the log anyway so the full reasoning trail is visible in one place, but don't present it in an interview as if it were "validated" — it doesn't need validation, it needs disclosure, which is handled in the charter and the data lineage note.
