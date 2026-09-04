@@ -1,0 +1,779 @@
+
+<title>Discovery Sprint</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg:#F1F3F2;
+    --surface:#FFFFFF;
+    --surface-2:#E9ECEA;
+    --ink:#1E2A2E;
+    --ink-muted:#5B6B6E;
+    --ink-faint:#8A9598;
+    --accent:#B96A22;
+    --accent-ink:#7A430E;
+    --rail:#2F6F76;
+    --rail2:#3E5B7A;
+    --line:#D8DAD3;
+    --line-strong:#C3C8C2;
+    --done-bg:#E7F0EA;
+    --done-ink:#2F6B45;
+    --shadow: 0 1px 2px rgba(20,30,30,.06), 0 4px 14px rgba(20,30,30,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12181A;
+      --surface:#1B2326;
+      --surface-2:#212B2E;
+      --ink:#E7EDEA;
+      --ink-muted:#93A2A2;
+      --ink-faint:#5E6C6C;
+      --accent:#E0954A;
+      --accent-ink:#F2C08E;
+      --rail:#63B7B0;
+      --rail2:#8FADCF;
+      --line:#2A3438;
+      --line-strong:#374245;
+      --done-bg:#1C2E22;
+      --done-ink:#7FCB98;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12181A;
+    --surface:#1B2326;
+    --surface-2:#212B2E;
+    --ink:#E7EDEA;
+    --ink-muted:#93A2A2;
+    --ink-faint:#5E6C6C;
+    --accent:#E0954A;
+    --accent-ink:#F2C08E;
+    --rail:#63B7B0;
+    --rail2:#8FADCF;
+    --line:#2A3438;
+    --line-strong:#374245;
+    --done-bg:#1C2E22;
+    --done-ink:#7FCB98;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    padding:56px 24px 96px;
+  }
+
+  /* header */
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--rail);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:clamp(40px,7vw,64px);
+    line-height:.94;
+    letter-spacing:.005em;
+    margin:0 0 14px;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  .subhead{
+    font-size:16px;
+    line-height:1.6;
+    color:var(--ink-muted);
+    max-width:56ch;
+    margin:0 0 8px;
+  }
+  .phase-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+  .phase-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .phase-tag.week2 .dot{background:var(--rail2);}
+
+  /* section divider between weeks */
+  .week-divider{
+    margin:60px 0 8px;
+    padding-top:36px;
+    border-top:2px solid var(--line-strong);
+  }
+  .week-divider .eyebrow{color:var(--rail2);}
+  .week-divider h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:clamp(28px,5vw,40px);
+    line-height:1;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .week-divider p{
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--ink-muted);
+    max-width:58ch;
+    margin:0 0 4px;
+  }
+
+  /* decision-needed flag */
+  .flag{
+    margin-top:22px;
+    background:var(--surface-2);
+    border:1.5px dashed var(--accent);
+    border-radius:10px;
+    padding:16px 20px;
+  }
+  .flag .flag-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .flag p{
+    margin:0;
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--ink-muted);
+  }
+  .flag a{color:var(--accent-ink);}
+
+  /* layout: rail + cards */
+  .flow{
+    display:grid;
+    grid-template-columns:28px 1fr;
+    gap:0 18px;
+    margin-top:36px;
+  }
+  .rail-col{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .rail-line{
+    position:absolute;
+    top:22px;
+    bottom:22px;
+    left:50%;
+    width:2px;
+    transform:translateX(-50%);
+    background-image:linear-gradient(var(--rail) 60%, transparent 0%);
+    background-size:2px 10px;
+    background-repeat:repeat-y;
+    opacity:.55;
+  }
+  .flow.week2 .rail-line{background-image:linear-gradient(var(--rail2) 60%, transparent 0%);}
+  .rail-dot{
+    position:relative;
+    z-index:1;
+    width:9px;height:9px;
+    border-radius:50%;
+    background:var(--surface);
+    border:2px solid var(--rail);
+    margin-top:34px;
+  }
+  .flow.week2 .rail-dot{border-color:var(--rail2);}
+  .rail-dot.first{margin-top:22px;}
+
+  .cards{display:flex;flex-direction:column;}
+  .connector{
+    display:flex;
+    align-items:center;
+    padding-left:2px;
+    height:26px;
+    color:var(--line-strong);
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    padding:20px 22px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:16px;
+    position:relative;
+  }
+  .card.current{border-color:var(--accent);}
+  .card.done{opacity:.72;}
+
+  .daynum{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:34px;
+    line-height:1;
+    color:var(--ink-faint);
+    padding-top:2px;
+    min-width:44px;
+  }
+  .card.current .daynum{color:var(--accent);}
+  .card.done .daynum{color:var(--done-ink);}
+
+  .card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .task-title{
+    font-size:16px;
+    font-weight:600;
+    margin:0 0 6px;
+    line-height:1.35;
+  }
+  .badges{display:flex;gap:6px;flex-wrap:wrap;}
+  .badge{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.02em;
+    padding:3px 8px;
+    border-radius:5px;
+    white-space:nowrap;
+  }
+  .badge.now{background:var(--accent);color:#fff;}
+  .badge.done{background:var(--done-bg);color:var(--done-ink);}
+
+  .deliverable{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--rail);
+    margin:2px 0 10px;
+  }
+  .flow.week2 .deliverable{color:var(--rail2);}
+  .rationale{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-muted);
+    margin:0 0 12px;
+  }
+  .technique-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+  .technique{
+    font-size:11px;
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+
+  .check-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid var(--line);
+  }
+  .check-row label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-faint);
+    cursor:pointer;
+    user-select:none;
+  }
+  .check-row input{
+    appearance:none;
+    width:15px;height:15px;
+    border:1.5px solid var(--line-strong);
+    border-radius:4px;
+    display:grid;
+    place-content:center;
+    cursor:pointer;
+    background:var(--surface);
+  }
+  .check-row input:checked{
+    background:var(--done-ink);
+    border-color:var(--done-ink);
+  }
+  .check-row input:checked::after{
+    content:"";
+    width:7px;height:4px;
+    border-left:2px solid #fff;
+    border-bottom:2px solid #fff;
+    transform:rotate(-45deg) translate(0,-1px);
+  }
+
+  /* milestone */
+  .milestone{
+    margin-top:8px;
+    margin-left:46px;
+    background:var(--surface-2);
+    border:1.5px solid var(--rail);
+    border-radius:10px;
+    padding:22px 24px;
+  }
+  .milestone.week2{border-color:var(--rail2);}
+  .milestone h2{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-size:22px;
+    font-weight:700;
+    margin:0 0 10px;
+    color:var(--rail);
+    letter-spacing:.01em;
+  }
+  .milestone.week2 h2{color:var(--rail2);}
+  .milestone p{
+    font-size:13.5px;
+    color:var(--ink-muted);
+    line-height:1.6;
+    margin:0 0 14px;
+  }
+  .milestone ul{
+    list-style:none;
+    margin:0 0 14px;
+    padding:0;
+    display:grid;
+    gap:8px;
+  }
+  .milestone li{
+    font-size:13.5px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .milestone li::before{
+    content:"✓";
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--rail);
+    font-size:12px;
+  }
+  .milestone.week2 li::before{color:var(--rail2);}
+  .milestone li.pending::before{content:"○";color:var(--ink-faint);}
+  .milestone .next{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+
+  footer.note{
+    margin-top:40px;
+    margin-left:46px;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    line-height:1.6;
+    max-width:56ch;
+  }
+
+  @media (max-width:520px){
+    .flow{grid-template-columns:20px 1fr;gap:0 12px;}
+    .card{grid-template-columns:1fr;gap:8px;padding:18px;}
+    .daynum{font-size:26px;min-width:0;}
+    .milestone,footer.note{margin-left:32px;}
+  }
+</style>
+
+<div class="page">
+
+  <p class="eyebrow">Mining Downtime Project · Week 1</p>
+  <h1>Discovery Sprint</h1>
+  <p class="subhead">Five days that turn "machines keep breaking down" into a clear plan: what you're solving, who cares about it, and exactly what you need to build.</p>
+  <div class="phase-tag"><span class="dot"></span>Week 1 of 4 core weeks (+ Flex/Polish Week 5) — complete</div>
+
+  <div class="flow">
+
+    <div class="rail-col">
+      <div class="rail-line"></div>
+      <div class="rail-dot first"></div>
+    </div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">1</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Write down what this project will — and won't — do</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">01-Project-Charter.md — the project's "rulebook" (now at v5)</p>
+          <p class="rationale">A one-page contract with yourself. Example: "I'll figure out which machines break most and how much it costs — but I won't build the actual repair software." Went through two red-team passes plus a governance-title fix (Executive Sponsor → Project Sponsor) after the register surfaced a seniority mismatch.</p>
+          <div class="technique-row">
+            <span class="technique">Give Claude a role to play (role prompting)</span>
+            <span class="technique">Ask → get feedback → improve (critique loop)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="1"> Mark Day 1 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">1–2</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Make a pretend list of mining machines</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">asset register — a spreadsheet of equipment</p>
+          <p class="rationale">Your real dataset doesn't know it's about mining — it's just generic machine numbers. So you invent a realistic list: what kind of machine, which site, how costly it is if it breaks. Built as a 48-asset fleet (5 High / 14 Medium / 29 Low), matching AI4I's real tier proportions.</p>
+          <div class="technique-row">
+            <span class="technique">Ask for a specific table (structured output)</span>
+            <span class="technique">Give 2 examples, get more (few-shot)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="1-2"> Mark Day 1–2 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">2</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">List everyone who'd care if this got fixed</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">02-Stakeholder-Register.md — a list of roles, not just names</p>
+          <p class="rationale">Not just "managers" — specific people, like whoever schedules repairs or whoever pays for them. Example: a Maintenance Planner who decides what gets fixed first, a Finance Controller who watches the repair budget.</p>
+          <div class="technique-row">
+            <span class="technique">Think it through step by step first (chain-of-thought)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="2"> Mark Day 2 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">3</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Pretend-interview six people about the problem</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">6 transcripts — 4 full interviews, 2 short conversations</p>
+          <p class="rationale">You can't interview a real mining company, so Claude plays each role and you interview them for real, one fresh chat per persona. Example: Finance says "repairs are costing too much," Ops says "but the trucks being broken costs us more." Openly flagged in the repo as simulated.</p>
+          <div class="technique-row">
+            <span class="technique">Make Claude act like a real person (persona prompting)</span>
+            <span class="technique">Real back-and-forth chat (multi-turn dialogue)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="3"> Mark Day 3 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">4</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Turn everything into one "here's what we need" document</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">03-BRD-Maintenance-Reporting.md (v1)</p>
+          <p class="rationale">Combine the charter and the pretend interviews into a formal requirements list. Example: "The report must show, for each type of machine, how many hours it was broken down last month." First speed comparison logged in the Efficiency Tracker: ~5 hrs manual estimate vs. 0.5 hrs with Claude.</p>
+          <div class="technique-row">
+            <span class="technique">Ask for a fixed format (structured output)</span>
+            <span class="technique">Give it a template to fill in (template-constrained)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="4"> Mark Day 4 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">5</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Get it torn apart, then fix it</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">03-BRD-Maintenance-Reporting.md (v2)</p>
+          <p class="rationale">Asked Claude, in a fresh context, to act like a tough sign-off-committee reviewer hunting for every weak spot. It returned 30 findings — every one addressed in v2. The single biggest catch: v1 over-claimed "independent" stakeholder corroboration when all six personas came from the same underlying process — now disclosed plainly in a new methodology section.</p>
+          <div class="technique-row">
+            <span class="technique">Have it hunt for every flaw (red-team loop)</span>
+            <span class="technique">Compare two independent checks (self-consistency)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="5"> Mark Day 5 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="milestone">
+    <h2>Week 1 milestone — complete</h2>
+    <p>All four of these are real, finished things, and Week 2 has already started.</p>
+    <ul>
+      <li>The charter — finished and locked (v5)</li>
+      <li>The stakeholder list — 10–14 real roles, governance resolved</li>
+      <li>The requirements doc — reviewed and fixed (v2), 30 critique findings closed</li>
+      <li>A running Scope-Decisions-and-Limitations-Log, added to continuously since Day 1</li>
+    </ul>
+    <p class="next">→ Week 2 below — mapping the process and preparing the data</p>
+  </div>
+
+  <div class="week-divider">
+    <p class="eyebrow">Mining Downtime Project · Week 2</p>
+    <h2>Process Mapping &amp; Data Design</h2>
+    <p>Five days that turn the BRD's written requirements into a picture of the actual workflow, then into a real, queryable database. This is the "prove it's a real process, not just a document" week.</p>
+    <div class="phase-tag week2"><span class="dot"></span>Week 2 of 4 core weeks — in progress, Days 6–7 done</div>
+
+    <div class="flag">
+      <p class="flag-label">Decision resolved — 7 September 2026</p>
+      <p>The Step 4 fast-fix-vs-root-cause fork (Day 7) is settled: <b>Option B adopted</b> — a repeat-failure escalation checkpoint requiring joint Maintenance/Reliability sign-off before a repeat fast-fix proceeds. <b>Option C</b> (pre-approved reliability budget pool) is deferred as a named future-phase recommendation for the Week 3 business case, pending Finance/capital-planning validation. Full record in <code>04-Process-Maps.md</code>, Section 8.</p>
+    </div>
+  </div>
+
+  <div class="flow week2">
+
+    <div class="rail-col">
+      <div class="rail-line"></div>
+      <div class="rail-dot first"></div>
+    </div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">6</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Draw the current (broken) process, step by step</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">04-Process-Maps.md — As-Is swimlane map (Sections 1–5)</p>
+          <p class="rationale">Turned the BRD's narrative into an 11-step process across 6 lanes (Production, Maintenance planning, Execution, Reliability, CMMS, Leadership/Finance), with every one of the BRD's 11 pain points pinned to the exact step and interview source it came from. Rendered as a Mermaid flowchart rather than a hand-drawn diagram, so it lives as plain text in the repo.</p>
+          <div class="technique-row">
+            <span class="technique">Break the process into discrete steps first (chain-of-thought)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="6"> Mark Day 6 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">7</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Draw the fixed process, and be honest about what's still broken</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">04-Process-Maps.md — To-Be map + gap analysis (Sections 6–10)</p>
+          <p class="rationale">Same 11 steps, walked through again with what each BRD requirement actually changes. Gap-analysis scorecard: 6 of 11 pain points fully closed, 2 partially closed, 2 genuinely open, 1 permanently out of scope — not "11 of 11 fixed." Also caught and logged a new gap along the way: no requirement currently fixes the messy cause-code dropdown (now proposed as FR-14).</p>
+          <div class="technique-row">
+            <span class="technique">2–3 weighted options, not one answer (options analysis)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="7"> Mark Day 7 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card done">
+        <div class="daynum">8</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Write down what every field means and where it comes from</p>
+            <div class="badges"><span class="badge done">Done</span></div>
+          </div>
+          <p class="deliverable">05-Data-Dictionary.md</p>
+          <p class="rationale">All 20 columns of the already-merged <code>ai4i2020-kestrel.csv</code> tagged dataset / labeled assumption, plus the honest state of the two benchmark figures: repair time (ready for Mobile fleet, deliberately omitted for Fixed plant) and downtime cost per hour (real candidates found, decision deferred to Week 3). Surfaced and resolved one open item along the way: the three pump/valve/motor proxy figures don't cover the Ancillary tier's other 25 assets, so — decided 8 Sept 2026 — Ancillary now reports by failure frequency only, same rule as Fixed plant. That also corrected an earlier overclaim: real repair-time coverage is the Mobile fleet's 14 assets, not "43 of 48."</p>
+          <div class="technique-row">
+            <span class="technique">Reverse-engineer structure from raw columns (structured output)</span>
+            <span class="technique">Flag every assumption inline, don't bury it</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="8"> Mark Day 8 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card current">
+        <div class="daynum">9</div>
+        <div>
+          <div class="card-top">
+            <p class="task-title">Load the merged data into a real database, write the core queries</p>
+            <div class="badges"><span class="badge now">You are here</span></div>
+          </div>
+          <p class="deliverable">mining_reliability.db (SQLite) + core SQL queries</p>
+          <p class="rationale">The merge itself is already done — <code>ai4i2020-kestrel.csv</code> already has Asset ID and the register fields joined in (see <code>reskin_deal.py</code>). What's left: load that file into an actual queryable database, then write the core queries — failure counts/rate by tier, the failure-mode Pareto, and downtime-hours (joining real failure counts against the Data Dictionary's Mobile-fleet repair-time figure; Fixed plant and Ancillary held back until their open items resolve).</p>
+          <div class="technique-row">
+            <span class="technique">Prompt-to-code from an explicit spec</span>
+            <span class="technique">Ask for a sanity-check script too (verification step)</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="9"> Mark Day 9 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="connector" style="grid-column:2;">
+      <svg width="16" height="26" viewBox="0 0 16 26" role="img" aria-label="flows into next task">
+        <line x1="8" y1="0" x2="8" y2="18" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="8,26 3,17 13,17" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="rail-col"><div class="rail-line"></div><div class="rail-dot"></div></div>
+    <div class="cards">
+      <div class="card">
+        <div class="daynum">10</div>
+        <div>
+          <p class="task-title">Run the first real numbers</p>
+          <p class="deliverable">First-pass EDA — failure-mode Pareto, downtime-hours/cost estimate</p>
+          <p class="rationale">The first output that actually answers one of the six locked business questions with real numbers instead of a plan. Ask Claude to critique the analysis approach before running it ("what would a skeptical reliability engineer say is missing?"), then help interpret what comes out.</p>
+          <div class="technique-row">
+            <span class="technique">Critique the plan before running it, not just the output</span>
+          </div>
+          <div class="check-row">
+            <label><input type="checkbox" data-day="10"> Mark Day 10 done</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="milestone week2">
+    <h2>What you should have by end of Week 2</h2>
+    <p>Two of four are already real, finished things — the other two are what today and tomorrow are for.</p>
+    <ul>
+      <li>As-Is and To-Be process maps, with a gap-analysis scorecard</li>
+      <li>The Step 4 redesign decision, made and documented (Section 8)</li>
+      <li class="pending">Data dictionary, covering every field and its source</li>
+      <li class="pending">Cleaned dataset loaded into a real SQLite database, with core SQL queries and first-pass EDA findings</li>
+    </ul>
+    <p class="next">→ then Week 3 begins — the dashboard and the business case, where the numbers get real</p>
+  </div>
+
+  <footer class="note">The dashed line running alongside each day is the Scope-Decisions-and-Limitations-Log — it's not a single day's job, you add a line to it any day you guess at something or hit a limitation. Only tick a day's box once the actual file exists and you've timed how long it took — not just once you've finished talking about it.</footer>
+
+</div>
+
+<script>
+(function(){
+  try{
+    var KEY = 'discovery-sprint-progress';
+    var boxes = document.querySelectorAll('.card input[type="checkbox"]');
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ saved = {}; }
+    boxes.forEach(function(b){
+      var id = b.dataset.day;
+      if (saved[id]) { b.checked = true; b.closest('.card').classList.add('done'); }
+      if (b.closest('.card').classList.contains('done')) { b.checked = true; saved[id] = true; }
+      b.addEventListener('change', function(){
+        saved[id] = b.checked;
+        b.closest('.card').classList.toggle('done', b.checked);
+        try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){}
+      });
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e){}
+  } catch(e){}
+})();
+</script>
