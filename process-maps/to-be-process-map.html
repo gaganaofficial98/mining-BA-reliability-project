@@ -1,0 +1,374 @@
+
+<title>To-Be Process Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2F0EA;
+    --surface:#FFFFFF;
+    --surface-2:#EAE7DF;
+    --ink:#1E2A2E;
+    --ink-muted:#5B6B6E;
+    --ink-faint:#8A9598;
+    --line:#DAD5C9;
+    --line-strong:#C7C1B2;
+    --accent:#B96A22;
+    --accent-ink:#7A430E;
+    --rail:#2F6F76;
+    --fixed:#3F7D4A;      --fixed-soft:#E2EEE2;
+    --partial:#A15C1C;    --partial-soft:#F3E3D2;
+    --neutral:#6B7678;    --neutral-soft:#E7E7E3;
+    --pending:#2F5FA3;    --pending-soft:#DEE7F3;
+    --decided:#6A3FA0;    --decided-soft:#EAE0F5;
+    --shadow: 0 1px 2px rgba(20,30,30,.06), 0 6px 18px rgba(20,30,30,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12181A; --surface:#1B2326; --surface-2:#212B2E;
+      --ink:#E7EDEA; --ink-muted:#9CA8A8; --ink-faint:#6B7676;
+      --line:#2A3438; --line-strong:#39434750;
+      --accent:#E0954A; --accent-ink:#F2C08E;
+      --rail:#63B7B0;
+      --fixed:#7FCB98;   --fixed-soft:#1D3323;
+      --partial:#E0A464; --partial-soft:#3A2C1A;
+      --neutral:#A6AFAF; --neutral-soft:#242C2E;
+      --pending:#8FB2E0; --pending-soft:#1C2C42;
+      --decided:#C4A6E8; --decided-soft:#2B2140;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12181A; --surface:#1B2326; --surface-2:#212B2E;
+    --ink:#E7EDEA; --ink-muted:#9CA8A8; --ink-faint:#6B7676;
+    --line:#2A3438; --line-strong:#39434750;
+    --accent:#E0954A; --accent-ink:#F2C08E;
+    --rail:#63B7B0;
+    --fixed:#7FCB98;   --fixed-soft:#1D3323;
+    --partial:#E0A464; --partial-soft:#3A2C1A;
+    --neutral:#A6AFAF; --neutral-soft:#242C2E;
+    --pending:#8FB2E0; --pending-soft:#1C2C42;
+    --decided:#C4A6E8; --decided-soft:#2B2140;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  .page{max-width:820px;margin:0 auto;padding:52px 24px 90px;}
+  code{font-family:'IBM Plex Mono',monospace;font-size:.93em;background:var(--surface-2);padding:1px 5px;border-radius:4px;}
+
+  /* doc header block, mirrors the source .md's metadata header */
+  .doc-header{border-bottom:2px solid var(--ink);padding-bottom:22px;margin-bottom:30px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--rail);margin:0 0 12px;}
+  h1{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:clamp(32px,6vw,48px);line-height:.98;letter-spacing:.002em;margin:0 0 16px;text-wrap:balance;}
+  .meta-grid{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:12.5px;max-width:640px;}
+  .meta-grid dt{color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding-top:1px;}
+  .meta-grid dd{margin:0;color:var(--ink-muted);line-height:1.5;}
+
+  h2{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:24px;margin:0 0 6px;letter-spacing:.002em;}
+  .section{margin-top:44px;}
+  .section-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--rail);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px;}
+  .lede{font-size:14px;line-height:1.7;color:var(--ink-muted);max-width:70ch;margin:0 0 4px;}
+
+  /* legend */
+  .legend{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 4px;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px 5px 9px;}
+  .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .legend-dot.fixed{background:var(--fixed);}
+  .legend-dot.partial{background:var(--partial);}
+  .legend-dot.neutral{background:var(--neutral);}
+  .legend-dot.pending{background:var(--pending);}
+  .legend-dot.decided{background:var(--decided);}
+
+  /* swimlane walkthrough (prose, matching the As-Is doc's format) */
+  .lane-block{margin-top:22px;}
+  .lane-name{font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;color:var(--rail);text-transform:uppercase;letter-spacing:.04em;margin:0 0 4px;}
+  .lane-owners{font-size:12px;color:var(--ink-faint);margin:0 0 14px;}
+  .step-p{
+    font-size:14px;line-height:1.75;color:var(--ink);margin:0 0 16px;padding:14px 16px 14px 18px;
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--line-strong);border-radius:8px;
+  }
+  .step-p.fixed{border-left-color:var(--fixed);}
+  .step-p.partial{border-left-color:var(--partial);}
+  .step-p.pending{border-left-color:var(--pending);}
+  .step-p.decided{border-left-color:var(--decided);}
+  .step-p b{font-weight:600;}
+  .step-p .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--surface-2);padding:1px 6px;border-radius:4px;color:var(--ink-muted);}
+  .step-chip{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.03em;padding:2px 7px;border-radius:4px;font-weight:600;float:right;margin-left:10px;}
+  .step-chip.fixed{background:var(--fixed-soft);color:var(--fixed);}
+  .step-chip.partial{background:var(--partial-soft);color:var(--partial);}
+  .step-chip.neutral{background:var(--neutral-soft);color:var(--neutral);}
+  .step-chip.pending{background:var(--pending-soft);color:var(--pending);}
+  .step-chip.decided{background:var(--decided-soft);color:var(--decided);}
+
+  /* diagram panel */
+  .diagram-panel{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:22px 20px 18px;}
+  .diagram-scroll{overflow-x:auto;}
+  .diagram-scroll pre.mermaid{margin:0;min-width:760px;}
+  figcaption{font-size:12.5px;color:var(--ink-faint);line-height:1.6;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);max-width:74ch;}
+
+  /* options table */
+  .table-wrap{overflow-x:auto;margin-top:14px;}
+  .opt-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:8px;overflow:hidden;border:1px solid var(--line);}
+  .opt-table th,.opt-table td{text-align:left;padding:11px 14px;font-size:12.5px;vertical-align:top;border-bottom:1px solid var(--line);}
+  .opt-table th{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:600;background:var(--surface-2);}
+  .opt-table tr:last-child td{border-bottom:none;}
+  .opt-table td.opt-name{font-weight:600;white-space:nowrap;}
+  .badge-row{display:flex;gap:5px;flex-wrap:wrap;}
+  .badge-sm{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface-2);color:var(--ink-muted);}
+
+  /* gap analysis table */
+  .gap-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:8px;overflow:hidden;border:1px solid var(--line);font-size:12.5px;}
+  .gap-table th,.gap-table td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .gap-table th{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);font-weight:600;background:var(--surface-2);}
+  .gap-table tr:last-child td{border-bottom:none;}
+  .gap-table td.pp{font-weight:600;white-space:nowrap;}
+  .status-pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:999px;font-weight:600;white-space:nowrap;}
+  .status-pill.fixed{background:var(--fixed-soft);color:var(--fixed);}
+  .status-pill.partial{background:var(--partial-soft);color:var(--partial);}
+  .status-pill.open{background:var(--pending-soft);color:var(--pending);}
+  .status-pill.oos{background:var(--neutral-soft);color:var(--neutral);}
+
+  /* scorecard */
+  .scorecard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 14px;text-align:center;}
+  .stat .num{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:30px;line-height:1;font-variant-numeric:tabular-nums;}
+  .stat.fixed .num{color:var(--fixed);}
+  .stat.partial .num{color:var(--partial);}
+  .stat.open .num{color:var(--pending);}
+  .stat.oos .num{color:var(--ink-faint);}
+  .stat .label{font-size:10.5px;color:var(--ink-muted);margin-top:6px;line-height:1.4;}
+  @media (max-width:560px){.scorecard{grid-template-columns:repeat(2,1fr);}}
+
+  .decision-panel{margin-top:14px;background:var(--pending-soft);border:1.5px solid var(--pending);border-radius:12px;padding:20px 22px;}
+  .decision-panel p{font-size:13.5px;line-height:1.65;color:var(--ink);max-width:72ch;margin:0;}
+
+  .finding-panel{margin-top:14px;background:var(--partial-soft);border:1.5px solid var(--partial);border-radius:12px;padding:20px 22px;}
+  .finding-panel p{font-size:13.5px;line-height:1.65;color:var(--ink);max-width:72ch;margin:0 0 10px;}
+  .finding-panel p:last-child{margin-bottom:0;}
+
+  footer.note{margin-top:44px;font-size:12px;color:var(--ink-faint);line-height:1.7;max-width:68ch;border-top:1px solid var(--line);padding-top:18px;}
+</style>
+
+<div class="page">
+
+  <div class="doc-header">
+    <p class="eyebrow">04 — Process Maps · To-Be</p>
+    <h1>To-Be Process Map</h1>
+    <dl class="meta-grid">
+      <dt>Project</dt><dd>Reducing Unplanned Equipment Downtime &amp; Improving Maintenance Reliability</dd>
+      <dt>Prepared by</dt><dd>Gagana Suresh, Business Analyst</dd>
+      <dt>Status</dt><dd>Complete. Step 4 fork redesign decision resolved 7 September 2026 — Option B adopted, Option C deferred, §4</dd>
+      <dt>Date</dt><dd>4 September 2026 (§4 updated 7 September 2026)</dd>
+      <dt>Source documents</dt><dd><code>04-Process-Maps.md</code> §6–10 (this page's source) · <code>03-BRD-Maintenance-Reporting.md</code> v2, §8 (functional requirements) · the As-Is map, same file, §1–5</dd>
+    </dl>
+  </div>
+
+  <div class="section">
+    <p class="section-num">§1 · How to read this map</p>
+    <p class="lede">Same eleven steps as the As-Is map, walked through a second time. At each step: did any BRD requirement actually fix what was broken there? If yes, what changes. If no, that's said plainly rather than smoothed over. The colour on each paragraph below matches the colour on the diagram in §2.</p>
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot fixed"></span>Fixed by a BRD requirement</span>
+      <span class="legend-item"><span class="legend-dot partial"></span>Partially fixed — one gap remains</span>
+      <span class="legend-item"><span class="legend-dot neutral"></span>Unchanged — outside this project's scope</span>
+      <span class="legend-item"><span class="legend-dot decided"></span>Decided — a governance rule, not a system fix</span>
+      <span class="legend-item"><span class="legend-dot pending"></span>Depends on Option B holding under pressure</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-num">§2 · Swimlane walkthrough</p>
+    <p class="lede">Same eleven steps, same six lanes as the As-Is map. Steps with no BRD requirement attached (1, 2, 5, 7) are unchanged from As-Is — this project's scope is the reporting/data-capture layer, not a full operational redesign, and it would be dishonest to claim a fix at a step nothing in the BRD actually touches.</p>
+
+    <div class="lane-block">
+      <p class="lane-name">Condition Monitoring — continuous background</p>
+      <div class="step-p partial"><span class="step-chip partial">Partial</span><b>Step 0 — Condition monitoring.</b> Changed by FR-07 and FR-08. An amber reading that persists for three consecutive review cycles now automatically raises a flag or scheduling prompt instead of silently rolling over in an inbox <span class="tag">closes PP6</span>. Every sensor now carries a logged last-calibration date, so a reviewer can tell a genuine precursor from a fouled/drifting sensor <span class="tag">closes PP7</span> — though only as far as the calibration-logging discipline is actually kept up; a process fix, not a one-time data fix. <b>PP11 (sub-threshold stoppages) is unchanged</b> — no requirement touches it, and it's a permanent, disclosed scope boundary, not a gap this project failed to close.</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">Production / Operations</p>
+      <div class="step-p fixed"><span class="step-chip fixed">Fixed</span><b>Step 1 — Failure occurs / detected.</b> Unchanged. No functional requirement targets detection itself.</div>
+      <div class="step-p fixed"><span class="step-chip fixed">Fixed</span><b>Step 2 — Breakdown reported &amp; logged.</b> Changed by FR-05. The work order now captures an explicit planned/unplanned flag at the moment it's raised, with a distinct field for a work order spanning both — the direct fix for the two-unsynchronised-clocks problem, because the ambiguity FR-05 removes is exactly what let the clocks drift apart unnoticed in the Financial Controller's crusher example.</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">Maintenance — Planning &amp; Supervision</p>
+      <div class="step-p partial"><span class="step-chip partial">Partial</span><b>Step 3 — Work order raised &amp; triaged.</b> FR-05's planned/unplanned flag helps here too. <b>PP2 (the cause-code dropdown) is not fixed by anything currently in the BRD</b> — see the new FR-14 proposal, §5.</div>
+      <div class="step-p decided"><span class="step-chip decided">Decided — Option B</span><b>Step 4 — Prioritized &amp; scheduled (the fast-fix/root-cause fork).</b> Resolved 7 September 2026 — see §4. A repeat-failure escalation checkpoint is adopted: a further fast-fix on a repeat failure now needs documented joint sign-off from Maintenance and Reliability. FR-01's asset-level rollup feeds that sign-off with the evidence it needs. Option C (a reliability budget pool) is deferred to a future phase, not chosen now.</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">Maintenance — Execution &amp; Condition Monitoring</p>
+      <div class="step-p fixed"><span class="step-chip fixed">Fixed</span><b>Step 5 — Diagnosed.</b> Unchanged.</div>
+      <div class="step-p fixed"><span class="step-chip fixed">Fixed (minimum bar)</span><b>Step 6 — Repaired.</b> Changed by FR-06. At minimum, every work order now supports a flag for "crew was reassigned mid-repair," so the dead time can be subtracted out rather than silently inflating the recorded duration. The stretch-goal half of FR-06 (live start/stop timestamps) would close this more fully but isn't required for go-live.</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">Production / Operations (return to service)</p>
+      <div class="step-p pending"><span class="step-chip pending">Depends on Option B</span><b>Step 7 — Returned to service.</b> Unchanged directly, though it inherits whatever happened at Step 4 — if the new escalation checkpoint actually catches a repeat failure and a proper fix goes in, the loop back to Step 1 doesn't get triggered at all, which is the real measure of whether Option B is working.</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">Reliability Engineering</p>
+      <div class="step-p pending"><span class="step-chip pending">Depends on Option B</span><b>Step 8 — Root cause analysis.</b> Indirectly supported by FR-01, and now directly feeds Step 4's escalation checkpoint. The RCA itself isn't changed by any requirement, but the case it's arguing for now has real numbers behind it — an asset's cumulative failure/cost history — rather than, in the Reliability Engineer's words, "one bloke with a spreadsheet and a hunch." That evidence is exactly what a Step 4 sign-off decision now has to weigh — though it still doesn't touch the approval-pathway problem underneath it (PP10 stays open; only the deferred Option C would touch that).</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">CMMS / System of Record</p>
+      <div class="step-p fixed"><span class="step-chip fixed">Fixed (pending sign-off)</span><b>Step 9 — Closed out &amp; data captured.</b> Changed by FR-09, pending Operations-side sign-off. A non-disciplinary contributing-factor field lets a closeout note "suspected operator-influenced" separately from the technical failure mode, closing PP8 — but only once an Operations stakeholder has actually reviewed the field, which hasn't happened yet. Also inherits FR-05's and FR-06's fixes finalising correctly here instead of the old, flawed way.</div>
+    </div>
+
+    <div class="lane-block">
+      <p class="lane-name">Leadership &amp; Finance</p>
+      <div class="step-p fixed"><span class="step-chip fixed">Fixed</span><b>Step 10 — Reported &amp; reviewed.</b> The most heavily changed step — FR-01, FR-02, FR-03, FR-04, FR-10, FR-11, FR-12, FR-13 all land here. A user can pull up an asset's cumulative failure/cost history, see failure modes ranked by count and cost, see failure rate and cost by asset tier, see every figure tagged as dataset-derived / cited-source / labelled-assumption, see the preventable-vs-random split, the torque/tool-wear threshold result, and the precursor-pattern classification.</div>
+      <div class="step-p pending"><span class="step-chip pending">Depends on Option B</span><b>Step 11 — Strategy &amp; continuous improvement.</b> Indirectly supported, same caveat as Step 8 — better information reaching this step doesn't by itself guarantee action gets taken; that now depends on how well Option B's checkpoint holds in practice, not on whether Step 4 gets redesigned at all — that part is decided.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-num">§3 · Process flow (rendered diagram)</p>
+    <p class="lede">Same eleven steps and six lanes as §2, drawn as a flow. Colour repeats the legend in §1.</p>
+    <div class="diagram-panel">
+      <div class="diagram-scroll">
+<pre class="mermaid">
+flowchart TD
+    subgraph L0["Condition Monitoring (continuous background)"]
+        CM0["Oil sampling / vibration routes run on schedule"]
+        CM1{{"Reading comes back"}}
+        CM2["Red alarm → actioned"]
+        CM3["✅ FR-07: Amber reading, 3 consecutive cycles\n→ automatic flag/scheduling prompt"]
+        CM4["✅ FR-08: Calibration date logged against sensor ID\n→ trend vs. drift now distinguishable"]
+        SUB["⚠ PP11 still unaddressed\n(permanent scope boundary, not a gap)"]
+        CM0 --> CM1
+        CM1 -->|red| CM2
+        CM1 -->|amber| CM3
+        CM3 --> CM4
+    end
+
+    subgraph L1["Production / Operations"]
+        A1["Step 1: Failure occurs / detected (unchanged)"]
+        A2["Step 2: Breakdown reported & logged\n✅ FR-05: planned/unplanned flag at point of entry"]
+        A7["Step 7: Asset returned to service"]
+    end
+
+    subgraph L2["Maintenance — Planning & Supervision"]
+        B3["Step 3: Work order raised & triaged\n⚠ PP2 still unaddressed → see proposed FR-14"]
+        B4{"Step 4: Prioritized & scheduled\nOption B adopted: repeat-failure\nescalation checkpoint (§4)"}
+    end
+
+    subgraph L3["Maintenance — Execution"]
+        C5["Step 5: Diagnosed (unchanged)"]
+        C6["Step 6: Repaired\n✅ FR-06 (minimum bar): mid-repair reassignment flag\n→ dead time excluded from recorded duration"]
+    end
+
+    subgraph L4["Reliability Engineering"]
+        D8["Step 8: Root cause analysis\n✅ supported by FR-01: RCA now backed by\nreal cumulative asset history, not a hunch"]
+    end
+
+    subgraph L5["CMMS / System of Record"]
+        E9["Step 9: Closed out & data captured\n✅ FR-09 (pending Ops sign-off): contributing-factor field"]
+    end
+
+    subgraph L6["Leadership & Finance"]
+        F10["Step 10: Reported & reviewed\n✅ FR-01/02/03/04/10/11/12/13 all land here"]
+        F11["Step 11: Strategy & continuous improvement\n(indirectly supported — depends on Step 4 outcome)"]
+    end
+
+    A1 --> A2 --> B3 --> B4
+    B4 -->|"escalation checkpoint applies\non repeat failures only"| C5
+    C5 --> C6 --> A7
+    A7 -->|"significant/repeat failure"| D8
+    A7 --> E9
+    D8 --> E9
+    D8 --> F11
+    E9 --> F10 --> F11
+    F11 -.->|"repeat-failure loop\n(shrinks if Step 4 is fixed well)"| A1
+
+    style CM3 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style CM4 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style SUB fill:#fff3cd,stroke:#b8860b,color:#1a1a1a
+    style A2 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style B3 fill:#fff3cd,stroke:#b8860b,color:#1a1a1a
+    style B4 fill:#e5d9f5,stroke:#6a3fa0,color:#1a1a1a
+    style C6 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style D8 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style E9 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style F10 fill:#d4edda,stroke:#2e7d32,color:#1a1a1a
+    style F11 fill:#fff3cd,stroke:#b8860b,color:#1a1a1a
+</pre>
+      </div>
+      <figcaption>Green = a BRD requirement fixes this step. Amber = this project's scope deliberately does not close it (PP2, PP11). Violet = Step 4 — not a system requirement fix like the green boxes, but a process/governance rule (Option B, adopted 7 September 2026, §4) that changes how the decision gets made.</figcaption>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-num">§4 · Step 4 redesign — decision (resolved 7 September 2026)</p>
+    <p class="lede"><b>Decision: Option B, for the current phase.</b> A repeat-failure escalation checkpoint — once the same failure mode recurs on the same asset within a defined window, a further fast-fix requires documented joint sign-off from the Maintenance Manager and Reliability Engineer. <b>Option C is deferred, not rejected</b> — carried forward as a named future-phase recommendation in the Week 3 business case, pending Finance/capital-planning validation. Option A stays in place regardless, as already-committed decision support. The table below is kept as the record of the trade-off comparison that led here, not as a still-open menu. None of the three options touches PP10, the opex/capex approval-pathway mismatch — a real structural constraint outside a reporting project's ability to fix by redesigning a workflow step; only the deferred Option C would.</p>
+    <div class="table-wrap">
+      <table class="opt-table">
+        <tr><th>Option</th><th>What it is</th><th>Cost / effort / risk</th><th>What it doesn't fix</th></tr>
+        <tr>
+          <td class="opt-name">A — Reporting only<br><span class="badge-sm" style="margin-top:4px;display:inline-block;">Already in place</span></td>
+          <td>No process change. FR-01's asset-level rollup is simply made available to whoever's making the Step 4 call, as decision-support.</td>
+          <td><div class="badge-row"><span class="badge-sm">Low cost</span><span class="badge-sm">Low effort</span></div></td>
+          <td>Nothing requires the decision to actually change — same informal call as today, just better-lit. Already committed regardless of what's chosen here.</td>
+        </tr>
+        <tr style="background:var(--decided-soft);">
+          <td class="opt-name">B — Escalation rule<br><span class="badge-sm" style="margin-top:4px;display:inline-block;background:var(--decided);color:#fff;">Chosen</span></td>
+          <td>A formal governance checkpoint: a third fast-fix on the same repeat failure requires documented joint sign-off from Maintenance and Reliability before it can proceed.</td>
+          <td><div class="badge-row"><span class="badge-sm">Medium cost</span><span class="badge-sm">Medium risk</span></div></td>
+          <td>Doesn't touch PP10 — if a proper fix genuinely can't get capital approval in time, this rule creates friction without a resolution path.</td>
+        </tr>
+        <tr>
+          <td class="opt-name">C — Reliability budget pool<br><span class="badge-sm" style="margin-top:4px;display:inline-block;">Deferred — future phase</span></td>
+          <td>A small, pre-approved opex-equivalent budget, jointly held by Finance and Operations, letting a qualifying root-cause fix bypass the full capex queue.</td>
+          <td><div class="badge-row"><span class="badge-sm">High cost</span><span class="badge-sm">High risk</span></div></td>
+          <td>Needs an actual finance-policy change and a capital-planning stakeholder this discovery phase never reached — highest potential impact, least validated option of the three.</td>
+        </tr>
+      </table>
+    </div>
+    <div class="decision-panel" style="background:var(--decided-soft);border-color:var(--decided);">
+      <p><b>What adopting Option B means, concretely:</b> it's a process/governance rule, not a system requirement — it adds no line to the BRD's functional requirements, but it does become a named recommendation in the Week 3 business case, alongside Option C as the deferred, higher-impact alternative for a later phase. <b>Still open, flagged honestly:</b> the escalation window itself (e.g., "twice in 6 months") hasn't been validated with the Maintenance Manager or Reliability Engineer yet — a starting assumption, same category as the BRD's FR-07 amber-escalation threshold, and needs confirming before this becomes a real workflow rule rather than a placeholder concept.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="section-num">§5 · Gap analysis — As-Is vs. To-Be</p>
+    <p class="lede">Every one of the As-Is map's eleven pain points, checked against what actually changes.</p>
+    <div class="table-wrap">
+      <table class="gap-table">
+        <tr><th>Pain point</th><th>To-Be treatment</th><th>Status</th></tr>
+        <tr><td class="pp">PP1 — Two unsynchronised downtime clocks</td><td>Planned/unplanned flag at point of entry (FR-05) removes the ambiguity that let the clocks drift apart.</td><td><span class="status-pill fixed">Closed</span></td></tr>
+        <tr><td class="pp">PP2 — ~40-option cause-code dropdown</td><td>No requirement currently in the BRD changes this.</td><td><span class="status-pill open">Open — FR-14 proposed, §6</span></td></tr>
+        <tr><td class="pp">PP3 — Repair duration not timed live</td><td>Mid-repair reassignment flag excludes dead time (minimum bar); live timestamps as an unrequired stretch goal.</td><td><span class="status-pill fixed">Closed (minimum bar)</span></td></tr>
+        <tr><td class="pp">PP4 — CMMS is work-order-centric</td><td>Failure-mode Pareto view, ranked by count and cost (FR-02).</td><td><span class="status-pill fixed">Closed</span></td></tr>
+        <tr><td class="pp">PP5 — RCA rarely converts to action</td><td>Better-evidenced case via FR-01's rollup, now paired with a mandatory joint sign-off on repeat failures (Option B).</td><td><span class="status-pill partial">Partial — converts the call into a checkpoint</span></td></tr>
+        <tr><td class="pp">PP6 — No amber-trend escalation</td><td>Automatic escalation after 3 consecutive amber cycles (FR-07).</td><td><span class="status-pill fixed">Closed</span></td></tr>
+        <tr><td class="pp">PP7 — No calibration-provenance tracking</td><td>Calibration date logged per sensor (FR-08).</td><td><span class="status-pill fixed">Closed</span></td></tr>
+        <tr><td class="pp">PP8 — No operator-influenced field</td><td>Non-disciplinary contributing-factor field (FR-09).</td><td><span class="status-pill partial">Partial — pending Ops sign-off</span></td></tr>
+        <tr><td class="pp">PP9 — Repeat patch cost invisible to Finance</td><td>Asset-level cumulative rollup, visible at point of sign-off (FR-01).</td><td><span class="status-pill fixed">Closed</span></td></tr>
+        <tr><td class="pp">PP10 — Opex/capex approval mismatch</td><td>Only Option C touches this directly — deferred to a future phase, not pursued now.</td><td><span class="status-pill open">Open — deferred, pending Finance validation</span></td></tr>
+        <tr><td class="pp">PP11 — Sub-threshold stoppages never logged</td><td>Structural boundary of the dataset/methodology itself.</td><td><span class="status-pill oos">Out of scope, by design</span></td></tr>
+      </table>
+    </div>
+    <div class="scorecard">
+      <div class="stat fixed"><div class="num">6</div><div class="label">Fully closed</div></div>
+      <div class="stat partial"><div class="num">2</div><div class="label">Partially closed</div></div>
+      <div class="stat open"><div class="num">2</div><div class="label">Still open</div></div>
+      <div class="stat oos"><div class="num">1</div><div class="label">Permanently out of scope</div></div>
+    </div>
+    <p class="lede" style="margin-top:14px;">Not "11 of 11 fixed" — a to-be map claiming a perfect fix for every pain point would be exactly the kind of overclaiming this project's own standards rule out.</p>
+  </div>
+
+  <div class="section">
+    <p class="section-num">§6 · New requirement surfaced by process mapping — FR-14 (proposed)</p>
+    <div class="finding-panel">
+      <p><b>Finding:</b> building the gap-analysis table above caught that PP2 (the cause-code dropdown) had been loosely attributed to FR-05 in this map's own earlier pain-point index — inaccurate; FR-05 covers only the planned/unplanned flag. There is no functional requirement anywhere in the BRD that redesigns the cause-code taxonomy.</p>
+      <p><b>Proposed FR-14 (Should) — Simplified, consistent cause-code taxonomy.</b> Replace the current ~40-option list, roughly half of which don't fit real failure descriptions, with a smaller, mutually-exclusive set mapped to real failure modes.</p>
+      <p><b>Status:</b> proposed, not yet written into the BRD. Logged in <code>Scope-Decisions-and-Limitations-Log.md</code> — folding it into a future BRD v3 is a decision for Gagana, same pattern as every other addition to this project's locked documents.</p>
+    </div>
+  </div>
+
+  <footer class="note">This page mirrors the structure of the As-Is map in <code>04-Process-Maps.md</code> §1–5 — same section order, same walkthrough-then-diagram-then-index pattern — applied to the To-Be pass (§6–10 of that same file). Full citations and interview sourcing for every claim above live in that document.</footer>
+
+</div>
