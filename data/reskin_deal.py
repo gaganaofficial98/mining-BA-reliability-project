@@ -14,7 +14,7 @@ SEED = 20260821
 rng = np.random.default_rng(SEED)
 
 # ---------------------------------------------------------------
-# 1. The synthetic asset register: 45 machines
+# 1. The synthetic asset register: 48 machines
 #    Tier = criticality (consequence of failure), not machine size.
 #    Fixed plant sits at H because it is a single point of failure:
 #    one crusher down stops the whole site; one haul truck down is
@@ -28,7 +28,7 @@ ASSETS = [
     ("CV-01",  "Overland Conveyor (1.4 km)", "Continental steel-cord",   "Fixed plant - conveying", "H", "Conveyor Corridor"),
     ("TH-01",  "CIL Thickener Drive",        "Outotec high-rate",        "Fixed plant - processing","H", "Grinding / CIL Circuit"),
 
-    # --- MEDIUM criticality (13): core production fleet
+    # --- MEDIUM criticality (14): core production fleet
     ("EX-01",  "Hydraulic Excavator",        "Komatsu PC2000-11",        "Mobile - loading",        "M", "Open Pit - Stage 3"),
     ("EX-02",  "Hydraulic Excavator",        "Hitachi EX1900-6",         "Mobile - loading",        "M", "Open Pit - Stage 3"),
     ("EX-03",  "Hydraulic Excavator",        "Liebherr R 9200",          "Mobile - loading",        "M", "Open Pit - Stage 2"),
@@ -44,7 +44,7 @@ ASSETS = [
     ("DR-02",  "Rotary Blasthole Drill",     "Sandvik DR410i",           "Mobile - drilling",       "M", "Open Pit - Stage 2"),
     ("DR-03",  "Down-the-Hole Drill",        "Epiroc SmartROC D65",      "Mobile - drilling",       "M", "Open Pit - Stage 2"),
 
-    # --- LOW criticality (27): support, auxiliary, redundant
+    # --- LOW criticality (29): support, auxiliary, redundant
     ("GR-01",  "Motor Grader",               "Caterpillar 16M3",         "Mobile - road maint.",    "L", "Haul Road Network"),
     ("GR-02",  "Motor Grader",               "Caterpillar 16M3",         "Mobile - road maint.",    "L", "Haul Road Network"),
     ("DZ-01",  "Track Dozer",                "Caterpillar D10T2",        "Mobile - earthmoving",    "L", "Open Pit - Stage 3"),
