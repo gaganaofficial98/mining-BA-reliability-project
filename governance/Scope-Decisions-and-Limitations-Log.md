@@ -2,7 +2,7 @@
 
 **Owner:** Gagana Suresh
 **Purpose:** A running record of decisions, limitations, and parked items agreed on during tutoring sessions — things that matter for the project but don't belong inside the Master Plan's core structure. Check this alongside the Master Plan and Interview-Prep-QA when starting new work.
-**Last updated:** 8 September 2026
+**Last updated:** 10 September 2026
 
 ---
 
@@ -332,6 +332,24 @@ When the Mining/Operations Manager interview transcript was brought back into th
 **What this does and doesn't affect:** only the Ancillary-tier (Low-criticality) downtime-hours query in Day 9's SQL work. Does not affect Mobile fleet (Medium tier, fully sourced) or High tier (already frequency-only under the existing Option B decision). Does not reduce the six locked business questions' answerability — Q1 and Q3 already carried a disclosed Medium/Low-tier-costed, High-tier-frequency-only caveat; that caveat now reads as Medium-tier-costed, High-and-Low-tier-frequency-only, which is a more accurate statement of the same caveat, not a new limitation.
 
 **Applied in:** `05-Data-Dictionary.md` §3.1–3.2 (updated 8 Sept 2026); this entry and the correction note on the 1 Sept 2026 Option B entry above.
+
+---
+
+## CORRECTION — failure-mode Pareto (`v_failure_mode_pareto`) was silently under-counting OSF, fixed 10 September 2026
+
+**Trigger:** an independent, memory-isolated review of Day 9's SQL work — same fresh-context adversarial-critique technique used on the BRD (4 Sept 2026), run as a subagent with no memory of how `core_queries.sql` was built, instructed to act as a skeptical reliability engineer and verify every number rather than trust the build log.
+
+**Finding:** the original `v_failure_mode_pareto` view had to pick exactly one "primary cause" per failure event, to satisfy the standing rule (Data Dictionary §3, Finding 3 above) that the Pareto must count by event, not by summing flag columns, so it stays reconcilable to the 339-failure total. Where a row had more than one mode flag set, the script's `classify_cause()` picked whichever flag came first in a fixed order — `[TWF, HDF, PWF, OSF, RNF]` — and credited only that one. OSF sits last in that list, so every time it co-occurred with an earlier-listed flag, it lost the tie and vanished from the Pareto entirely, even though it genuinely happened. Verified directly against the raw data: OSF is actually set on 98 of the 330 classified real failures, but the original view credited it with only 78 — a 20-event undercount (PWF was undercounted by 4 for the same reason; TWF and HDF, first in the list, were never affected). This is a real-consequence finding, not cosmetic: **Q5 (the torque/tool-wear overstrain threshold question) is specifically about OSF**, so a chart that understates OSF's true rate understates exactly the failure mode that question depends on.
+
+**Options considered, decision made by Gagana:** (1) add a caveat note to the existing single-count view, disclosing the tie-break rule and that OSF's true rate runs higher than shown; or (2) rework the query to report both numbers side by side, so nothing is hidden behind a footnote. **Decision: Option 2 — rework the query.** Gagana's own reasoning, verbatim in substance: a caveat still leaves "a chunk of OSF which actually is causing breakdown" out of the headline number, which isn't a defensible Pareto if a real chunk of a real failure mode is omitted from it. A footnote explaining a wrong number is a weaker fix than a query that isn't wrong in the first place.
+
+**Fix applied:** `v_failure_mode_pareto` now returns two counts per failure mode, not one: `primary_cause_count`/`primary_cause_pct` (the original, mutually-exclusive, one-row-one-cause metric — still sums to 339, still the right number for "how many discrete failure events were mainly caused by X," unchanged in meaning) and `true_occurrence_count`/`true_occurrence_pct` (how many real failures had this flag set at all, computed directly from the raw flag columns in `readings`, independent of the tie-break — deliberately does not sum to 339, since an event with 2+ flags is counted once under each). A third column, `additional_occurrences_hidden_by_tiebreak`, states the gap explicitly per mode. Re-verified after the fix: OSF now shows primary=78 / true=98 / hidden=20, cross-checked against an independent raw-data recompute (`SELECT SUM(OSF) FROM readings WHERE "Machine failure"=1` = 98, matching the view exactly). `primary_cause_count` still sums to 339 across all modes — the event-count rule this project has held since 24 Aug 2026 is unchanged, not relaxed; the new column answers a genuinely different question ("how often is this mode involved") rather than replacing the old one.
+
+**Two smaller findings from the same review, also fixed:** (1) the Mobile-fleet downtime estimate (83 failures x 2.2 hrs = 182.6 hrs) is a typical-case average from the cited sources, not a bound — those same sources document individual repairs running as long as 45 hrs. `v_downtime_hours_by_tier`'s disclosure_note for Mobile fleet now says so explicitly, rather than presenting 182.6 as if it were a single trustworthy total. (2) exactly one row (of 10,000) has both TWF and RNF flagged simultaneously alongside `Machine failure`=1 — genuinely ambiguous for Q4's preventable-vs-random classification. Left as a disclosed one-row edge case in `core_queries.sql`'s comments rather than special-cased in SQL: at n=1, a bespoke rule would add more complexity than the row's materiality justifies.
+
+**Why this belongs here:** this is the same category of catch as the ball/rod-mill citation-verification finding (25 Aug 2026) and the BRD's red-team pass (4 Sept 2026) — a real, run-not-hypothetical check that found a genuine issue in Claude's own prior output, not a wording nitpick, and it changed the actual analysis rather than just its presentation. Strong candidate for the prompt library's "adversarial critique / red-team loop" entry (`prompt-library/index.md` #4), generalized here from documents to SQL/quantitative work, and a second real substantive-override candidate for the Master Plan's Section 4 requirement, distinct from the ball/rod-mill one (that one was Gagana catching a citation error by hand; this one is Gagana choosing the more rigorous of two AI-proposed fixes once a real gap was found).
+
+**Applied in:** `core_queries.sql` (view rewritten + inline revision note + comment on the TWF+RNF row), `mining_reliability.db` (view re-applied and re-verified in place).
 
 ---
 
