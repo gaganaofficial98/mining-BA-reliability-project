@@ -16,10 +16,6 @@ This repo simulates a real BA consulting engagement end-to-end: stakeholder inte
 
 **Stakeholder interviews are simulated**, standing in for stakeholders this portfolio project has no access to — grounded in real mining organisational structures and interviewed through persona-prompted, multi-turn conversations, one fresh context per role. This is disclosed plainly in `discovery/` and in the BRD's own methodology section, including an honest limitation: the six personas are not truly *independent* evidence, since all six were generated from the same underlying process.
 
-## ⚠️ Known gap
-
-**`06-Business-Case.xlsx` is not in this repo.** It was built as a 5-tab linked Excel model (Summary, Assumptions & Sources, Current-State Cost, Projected Savings, Limitations) in a separate working session and delivered directly as a download — project document stores of the kind used to assemble most of this repo accept UTF-8 text only and reject binary files, which is why it never made it into the shared text workspace the rest of this repo was built from. If you still have that download, add it to the repo root as `06-Business-Case.xlsx`; if not, `00-Assumptions-Log.md` item 5 and `05-Data-Dictionary.md` §3.1–3.2 document the downtime-cost methodology, sensitivity range, and sourcing in enough detail to rebuild it.
-
 ## A note on this repo's commit history
 
 Most of this project's actual work happened inside a series of chat sessions, not commit-by-commit in a local git client — the files existed in a working document set before this repository did. Rather than start the visible history from a single "add everything" commit on the day the repo was created, each file below has been committed at the real calendar date it was substantively finished or last meaningfully revised (drawn from each document's own dated status line, or from the dated decision log entry that changed it). Where a file went through more than one real revision (for example, the BRD's v1 draft and its later red-team-critique v2), only the final state is committed, under the date of its last substantive revision — the intermediate draft was not preserved as a separate file, so this repo does not fabricate a synthetic diff between them. This is disclosed here rather than presented as a perfectly granular, moment-by-moment original history.
@@ -36,7 +32,7 @@ Most of this project's actual work happened inside a series of chat sessions, no
 | `04-Process-Maps.md` | As-Is and To-Be swimlane process maps, gap analysis, the Step 4 governance-fix decision |
 | `05-Data-Dictionary.md` | Field-by-field spec of the merged dataset, plus every external benchmark decision and its reasoning |
 | `EDA-Findings.md` | Exploratory data analysis answering all six locked business questions (Q1–Q6), including the pre-registered Q5/Q6 statistical threshold analysis |
-| `06-Business-Case.xlsx` | **Missing — see Known gap above** |
+| `06-Business-Case.xlsx` | 5-tab linked Excel model (Summary, Assumptions & Sources, Current-State Cost, Projected Savings, Limitations) — cost-of-downtime business case with sourced Low/High sensitivity range |
 | `07-User-Stories.md` | 17-story backlog across 8 epics, each traced to a BRD functional requirement |
 | `08-Test-Cases.md` | 49 test cases with full traceability and documented edge cases |
 | `09-Benefit-Realization-Report.md` | Benefits Dependency Network (Ward & Daniel), an attribution critique of every claimed benefit, 6 post-launch KPIs |
@@ -56,4 +52,4 @@ Most of this project's actual work happened inside a series of chat sessions, no
 
 ## Status
 
-All core deliverables (00 through 13, excluding the business case) are complete, along with the published Tableau dashboard, the full prompt library, and the efficiency tracker. The one remaining gap is `06-Business-Case.xlsx` — see **Known gap** above. See `00-Master-Plan.md` for the full schedule and `governance/Scope-Decisions-and-Limitations-Log.md` for the complete, continuously-updated decision record.
+All core deliverables (00 through 13) are complete, along with the published Tableau dashboard, the full prompt library, and the efficiency tracker. See `00-Master-Plan.md` for the full schedule and `governance/Scope-Decisions-and-Limitations-Log.md` for the complete, continuously-updated decision record.
