@@ -4,13 +4,21 @@
 
 **Owner:** Gagana Suresh — Early-career Business Analyst, Perth WA
 
+## Live dashboard
+
+The Tableau Public dashboard built from this project's data is live here: **[Mining Fleet Reliability Dashboard](https://public.tableau.com/app/profile/gagana.suresh.vatal/viz/MiningFleetReliabilityDashboard_/MiningFleetReliabilityDashboard)**. It isn't hosted as a file in this repo — Tableau Public dashboards are published and viewed through Tableau's own hosting, not downloaded `.twb`/`.twbx` files — so this link is the dashboard's actual home, not a placeholder for a missing file.
+
 ## What this is
 
-This repo simulates a real BA consulting engagement end-to-end: stakeholder interviews, requirements elicitation, process mapping, a data model and SQL layer, and (in progress) a dashboard and business case — all built the way an actual engagement would be run, with the same rigor a hiring manager would expect from paid client work.
+This repo simulates a real BA consulting engagement end-to-end: stakeholder interviews, requirements elicitation, process mapping, a data model and SQL layer, a user story backlog and test suite, a requirements traceability matrix, a benefit realization report, two optional stretch modules (an ML proof-of-concept and an LLM-based cause-code classifier), a published dashboard, and a business case — all built the way an actual engagement would be run, with the same rigor a hiring manager would expect from paid client work.
 
 **Data disclosure, up front:** the core dataset (AI4I 2020, a real UCI Machine Learning Repository dataset) is generic industrial sensor data, not mining-labelled. It has been re-skinned onto a synthetic 48-asset mining fleet built for this project — see `data/reskin_deal.py` for the exact, reproducible, auditable method used. No real confidential company data appears anywhere in this repo. Every number in every deliverable is tagged as one of: real dataset value, a cited external source, or a disclosed labeled assumption — never presented ambiguously.
 
 **Stakeholder interviews are simulated**, standing in for stakeholders this portfolio project has no access to — grounded in real mining organisational structures and interviewed through persona-prompted, multi-turn conversations, one fresh context per role. This is disclosed plainly in `discovery/` and in the BRD's own methodology section, including an honest limitation: the six personas are not truly *independent* evidence, since all six were generated from the same underlying process.
+
+## ⚠️ Known gap
+
+**`06-Business-Case.xlsx` is not in this repo.** It was built as a 5-tab linked Excel model (Summary, Assumptions & Sources, Current-State Cost, Projected Savings, Limitations) in a separate working session and delivered directly as a download — project document stores of the kind used to assemble most of this repo accept UTF-8 text only and reject binary files, which is why it never made it into the shared text workspace the rest of this repo was built from. If you still have that download, add it to the repo root as `06-Business-Case.xlsx`; if not, `00-Assumptions-Log.md` item 5 and `05-Data-Dictionary.md` §3.1–3.2 document the downtime-cost methodology, sensitivity range, and sourcing in enough detail to rebuild it.
 
 ## A note on this repo's commit history
 
@@ -20,22 +28,32 @@ Most of this project's actual work happened inside a series of chat sessions, no
 
 | Path | What's in it |
 |---|---|
-| `00-Master-Plan.md` | The project's own execution plan — scenario selection, data sourcing, week-by-week deliverable schedule |
-| `00-Assumptions-Log.md` | Living log of open/closed assumptions, several blocking specific downstream objectives |
+| `00-Master-Plan.md` | The project's own execution plan — scenario selection, data sourcing, week-by-week deliverable schedule, locked repo structure |
+| `00-Assumptions-Log.md` | Running, numbered index of every labeled assumption used anywhere in the project, cross-referenced to `governance/Scope-Decisions-and-Limitations-Log.md` |
 | `01-Project-Charter.md` | Scope, governance model (Sponsor/Business Owner split), constraints |
 | `02-Stakeholder-Register.md` | 10–14 real roles, tiered by power/interest, with a disclosed open naming question |
 | `03-BRD-Maintenance-Reporting.md` | Business Requirements Document (v2, post red-team critique) |
 | `04-Process-Maps.md` | As-Is and To-Be swimlane process maps, gap analysis, the Step 4 governance-fix decision |
 | `05-Data-Dictionary.md` | Field-by-field spec of the merged dataset, plus every external benchmark decision and its reasoning |
+| `EDA-Findings.md` | Exploratory data analysis answering all six locked business questions (Q1–Q6), including the pre-registered Q5/Q6 statistical threshold analysis |
+| `06-Business-Case.xlsx` | **Missing — see Known gap above** |
+| `07-User-Stories.md` | 17-story backlog across 8 epics, each traced to a BRD functional requirement |
+| `08-Test-Cases.md` | 49 test cases with full traceability and documented edge cases |
+| `09-Benefit-Realization-Report.md` | Benefits Dependency Network (Ward & Daniel), an attribution critique of every claimed benefit, 6 post-launch KPIs |
+| `10-Traceability-Matrix.xlsx` | 5-tab linked workbook mapping every FR to its BR, user stories, test cases, and dashboard element, with live COUNTIF/COUNTIFS formulas |
+| `11-Job-Fit-Matrix.md` | How this project's deliverables map to real Perth BA/analyst job postings |
+| `12-ML-Proof-of-Concept.md` | Optional Module A: a scoped predictive-maintenance proof-of-concept |
+| `13-LLM-Cause-Code-Classifier.md` | Optional Module B: an LLM-based cause-code classifier |
 | `governance/Scope-Decisions-and-Limitations-Log.md` | The running record of every scope decision, data limitation, and disclosed methodology choice made across the project |
 | `discovery/` | Six simulated stakeholder interview transcripts + the interview-prep Q&A bank |
 | `process-maps/to-be-process-map.html` | Standalone visual rendering of the To-Be process map |
 | `data/` | The re-skin script, the merged dataset, the SQLite database, and the load/verification script |
 | `efficiency-tracker/Efficiency-Tracker.xlsx` | Task-by-task manual-time-vs-actual-time log — the evidence behind the "AI made me faster" claim |
 | `portfolio-tracker/discovery-sprint.html` | A visual day-by-day progress tracker built alongside the project itself |
-| `prompt-library/` | Index of prompting techniques used, with the "what I changed after reviewing it" evidence — in progress |
+| `prompt-library/Prompt-Library.md` | 15 fully documented prompting-technique entries (context / prompt / why / output / what was changed after review), including two substantive-override entries |
+| `video-and-linkedin/` | Video walkthrough script, LinkedIn article, and one-page case study summary |
 | `working-notes/` | Plain-language flowchart explainers built during the project to check understanding before proceeding |
 
 ## Status
 
-Weeks 1–2 of the Master Plan's 4-core-week + polish-week schedule are complete through Day 9 (data loaded into SQLite, sanity-checked). Week 2's core SQL queries, Week 3's dashboard and business case, and the prompt library are in progress — see `00-Master-Plan.md` for the full schedule and `governance/Scope-Decisions-and-Limitations-Log.md` for the complete, continuously-updated decision record.
+All core deliverables (00 through 13, excluding the business case) are complete, along with the published Tableau dashboard, the full prompt library, and the efficiency tracker. The one remaining gap is `06-Business-Case.xlsx` — see **Known gap** above. See `00-Master-Plan.md` for the full schedule and `governance/Scope-Decisions-and-Limitations-Log.md` for the complete, continuously-updated decision record.
